@@ -1,9 +1,5 @@
 package api;
 
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.node_data;
-
 import java.util.Collection;
 
 public class DWGraph_DS implements directed_weighted_graph {

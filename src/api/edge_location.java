@@ -1,7 +1,5 @@
 package api;
 
-import api.edge_data;
-
 /**
  * This class represents a position on the graph (a relative position
  * on an edge - between two consecutive nodes).

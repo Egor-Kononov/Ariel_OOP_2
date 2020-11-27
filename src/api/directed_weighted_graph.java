@@ -1,6 +1,7 @@
 package api;
 
 import java.util.Collection;
+
 /**
  * This interface represents a directional weighted graph.
  * The interface has a road-system or communication network in mind - 
@@ -9,7 +10,7 @@ import java.util.Collection;
  * (should NOT be based on a n*n matrix).
  *
  */
-//egor lox
+
 public interface directed_weighted_graph {
 	/**
 	 * returns the node_data by the node_id,
