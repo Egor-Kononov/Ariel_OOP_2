@@ -7,14 +7,12 @@ import java.util.Objects;
 public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer,node_data> graph;
     private NodeData node;
-    private int nodeSize;
     private int edgeSize;
     private int mc;
 
 
     public DWGraph_DS(){
         graph = new HashMap<>();
-        nodeSize = 0;
         edgeSize = 0;
         mc = 0;
     }
@@ -39,18 +37,19 @@ public class DWGraph_DS implements directed_weighted_graph {
         if(graph.containsKey(n.getKey()))
             return;
         graph.put(n.getKey(),n);
-        nodeSize ++;
         mc ++;
     }
 
         @Override
     public void connect(int src, int dest, double w) {
-        if(w < 0 || !graph.containsKey(src) || !graph.containsKey(dest) || src == dest || getEdge(src,dest)!=null)
+        if(w < 0  || src == dest || getEdge(src,dest)!=null)
             return;
-        node = (NodeData)graph.get(src);
-        node.createEdge(src,dest,w);
-        edgeSize ++;
-        mc ++;
+        if(graph.containsKey(src)&&graph.containsKey(dest)){
+            node = (NodeData)graph.get(src);
+            node.createEdge(src,dest,w);
+            edgeSize ++;
+            mc ++;
+        }
     }
 
     @Override
@@ -82,7 +81,6 @@ public class DWGraph_DS implements directed_weighted_graph {
         }
         edgeSize -= node.getNi().size();
         mc += node.getNi().size();
-        nodeSize --;
         return graph.remove(key);
     }
 
@@ -101,15 +99,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DWGraph_DS that = (DWGraph_DS) o;
-        return nodeSize == that.nodeSize &&
-                edgeSize == that.edgeSize &&
-                Objects.equals(graph, that.graph) &&
-                Objects.equals(node, that.node);
+        return edgeSize == that.edgeSize &&
+                Objects.equals(graph, that.graph) ;
     }
 
     @Override
     public int nodeSize() {
-        return nodeSize;
+        return graph.size();
     }
 
     @Override
