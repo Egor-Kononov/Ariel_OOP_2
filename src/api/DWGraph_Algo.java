@@ -1,8 +1,6 @@
 package api;
 
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class DWGraph_Algo implements dw_graph_algorithms {
     directed_weighted_graph graph;
@@ -87,20 +85,92 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
     public void nullify(){
         for(node_data run : graph.getV()){
-            //run.setTag(Integer.MAX_VALUE);
+            run.setTag(Integer.MAX_VALUE);
             run.setInfo("white");
         }
     }
 
     @Override
     public double shortestPathDist(int src, int dest) {
-        return 0;
+        if(src == dest)
+            return 0;
+        if(graph.getV().contains(graph.getNode(src))&&graph.getV().contains(graph.getNode(dest))) {
+            dijkatra(src, dest);
+            double dist = this.graph.getNode(dest).getTag();
+            if(dist == Integer.MAX_VALUE)
+                return -1;
+            nullify();
+            return dist;
+        }
+        return -1;
     }
 
     @Override
     public List<node_data> shortestPath(int src, int dest) {
+        LinkedList<node_data> path = new LinkedList<node_data>();
+        if(src == dest) {
+            node_data s = graph.getNode(dest);
+            path.addFirst(s);
+            return path;
+        }
+        if(graph.getV().contains(graph.getNode(src))&&graph.getV().contains(graph.getNode(dest))) {
+            //HashMap with path
+            HashMap<node_data, Integer> h = dijkatra(src, dest);
+            node_data tempVariable = graph.getNode(dest);
+            //check if got to destination
+            if(tempVariable.getTag()==Integer.MAX_VALUE )
+                return null;
+            path.addFirst(tempVariable);
+            int keyOfparent = h.get(tempVariable);
+            while (keyOfparent != src) {
+                keyOfparent = h.get(tempVariable);
+                tempVariable = graph.getNode(keyOfparent);
+                path.addFirst(tempVariable);
+            }
+            nullify();
+            return path;
+        }
         return null;
     }
+    public HashMap<node_data,Integer> dijkatra(int src, int dest){
+        PriorityQueue<node_data> pq = new PriorityQueue<>(new Comparator<node_data>() {
+            @Override
+            public int compare(node_data o1, node_data o2) {
+                return  Double.compare(o1.getTag(), o2.getTag());
+            }
+        });
+        HashMap<node_data,Integer> parent = new HashMap();
+        node_data p = this.graph.getNode(src);
+        p.setTag(0);
+        pq.add(p);
+        while(!pq.isEmpty()){
+            node_data temp = pq.poll();
+            // blue the node which was visited
+            if(temp.getInfo() != "blue"){
+                temp.setInfo("blue");
+                if(temp.getKey() == dest){
+                    return parent;
+                }
+                // check all neighbors of visited node
+                for(edge_data run : this.graph.getE(temp.getKey())){
+                    if(graph.getNode(run.getDest()).getInfo() != "blue" ){
+                        edge_data edge = graph.getEdge(run.getSrc(),run.getDest());
+                        double dist = temp.getTag() + edge.getWeight();
+                        if(dist < graph.getNode(run.getDest()).getTag()){
+                            graph.getNode(run.getDest()).setTag(dist);
+                            pq.add(graph.getNode(run.getDest()));
+                            if(parent.containsKey(graph.getNode(run.getDest()))){
+                                parent.remove(graph.getNode(run.getDest()));
+                            }
+                            parent.put(graph.getNode(run.getDest()),temp.getKey());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public boolean save(String file) {

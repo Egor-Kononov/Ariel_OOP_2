@@ -9,7 +9,7 @@ public class NodeData implements node_data{
     private int key ;
     private static int count = 0;
     private String Info;
-    private int tag;
+    private double tag;
     private double weight;
 
 
@@ -18,7 +18,7 @@ public class NodeData implements node_data{
         neighbors = new HashMap<>();
         this.weight = 0;
         this.Info = "white";
-        this.tag = -1;
+        this.tag = Integer.MAX_VALUE;
         count ++;
     }
 
@@ -162,12 +162,12 @@ public class NodeData implements node_data{
     }
 
     @Override
-    public int getTag() {
+    public double getTag() {
         return this.tag;
     }
 
     @Override
-    public void setTag(int t) {
+    public void setTag(double t) {
         this.tag = t;
     }
 }
