@@ -22,6 +22,14 @@ public class NodeData implements node_data{
         count ++;
     }
 
+    public NodeData(node_data other){
+        this.key = other.getKey();
+        neighbors = new HashMap<>();
+        this.weight = other.getWeight();
+        this.Info = other.getInfo();
+        this.tag = other.getTag();
+    }
+
     public edge_data getEdge(int dest) {
         if(this.neighbors == null)
             return null;
