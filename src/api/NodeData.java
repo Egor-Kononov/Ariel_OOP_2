@@ -17,7 +17,7 @@ public class NodeData implements node_data{
         this.key = count;
         neighbors = new HashMap<>();
         this.weight = 0;
-        this.Info = "";
+        this.Info = "white";
         this.tag = -1;
         count ++;
     }

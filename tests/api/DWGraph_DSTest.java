@@ -1,4 +1,4 @@
-package tests;
+package api;
 
 import api.*;
 import org.junit.jupiter.api.*;
@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DWGraph_DSTest {
     private static Random _rnd = null;
+
+
 
     directed_weighted_graph g = new DWGraph_DS();
     node_data node = new NodeData();
