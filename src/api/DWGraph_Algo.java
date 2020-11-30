@@ -43,6 +43,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             start = run;
             break;
         }
+        if(start == null)
+            return false;
         flag = bfs(start,this.graph);
         if(flag == false)
             return false;
@@ -96,7 +98,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return 0;
         if(graph.getV().contains(graph.getNode(src))&&graph.getV().contains(graph.getNode(dest))) {
             dijkatra(src, dest);
-            double dist = this.graph.getNode(dest).getTag();
+            NodeData var = (NodeData) this.graph.getNode(dest);
+            double dist = var.getDist();
             if(dist == Integer.MAX_VALUE)
                 return -1;
             nullify();
@@ -115,60 +118,59 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         if(graph.getV().contains(graph.getNode(src))&&graph.getV().contains(graph.getNode(dest))) {
             //HashMap with path
-            HashMap<node_data, Integer> h = dijkatra(src, dest);
+            dijkatra(src, dest);
             node_data tempVariable = graph.getNode(dest);
             //check if got to destination
             if(tempVariable.getTag()==Integer.MAX_VALUE )
                 return null;
             path.addFirst(tempVariable);
-            int keyOfparent = h.get(tempVariable);
-            while (keyOfparent != src) {
-                keyOfparent = h.get(tempVariable);
+            int keyOfparent = tempVariable.getTag();
+            while (keyOfparent != src){
                 tempVariable = graph.getNode(keyOfparent);
                 path.addFirst(tempVariable);
+                keyOfparent = tempVariable.getTag();
             }
+            tempVariable = graph.getNode(keyOfparent);
+            path.addFirst(tempVariable);
             nullify();
             return path;
         }
         return null;
     }
-    public HashMap<node_data,Integer> dijkatra(int src, int dest){
-        PriorityQueue<node_data> pq = new PriorityQueue<>(new Comparator<node_data>() {
+    public void dijkatra(int src, int dest){
+        PriorityQueue<NodeData> pq = new PriorityQueue<>(new Comparator<NodeData>() {
             @Override
-            public int compare(node_data o1, node_data o2) {
-                return  Double.compare(o1.getTag(), o2.getTag());
+            public int compare(NodeData o1, NodeData o2) {
+                return  Double.compare(o1.getDist(), o2.getDist());
             }
         });
-        HashMap<node_data,Integer> parent = new HashMap();
-        node_data p = this.graph.getNode(src);
-        p.setTag(0);
+        NodeData p = (NodeData) this.graph.getNode(src);
+        p.setDist(0);
         pq.add(p);
         while(!pq.isEmpty()){
-            node_data temp = pq.poll();
+            NodeData temp = (NodeData) pq.poll();
             // blue the node which was visited
             if(temp.getInfo() != "blue"){
                 temp.setInfo("blue");
                 if(temp.getKey() == dest){
-                    return parent;
+                    return;
                 }
                 // check all neighbors of visited node
                 for(edge_data run : this.graph.getE(temp.getKey())){
                     if(graph.getNode(run.getDest()).getInfo() != "blue" ){
                         edge_data edge = graph.getEdge(run.getSrc(),run.getDest());
-                        double dist = temp.getTag() + edge.getWeight();
-                        if(dist < graph.getNode(run.getDest()).getTag()){
-                            graph.getNode(run.getDest()).setTag(dist);
-                            pq.add(graph.getNode(run.getDest()));
-                            if(parent.containsKey(graph.getNode(run.getDest()))){
-                                parent.remove(graph.getNode(run.getDest()));
-                            }
-                            parent.put(graph.getNode(run.getDest()),temp.getKey());
+                        double dist = temp.getDist() + edge.getWeight();
+                        NodeData var = (NodeData) graph.getNode(run.getDest());
+                        if(dist < var.getDist()){
+                            var.setDist(dist);
+                            pq.add(var);
+                            var.setTag(temp.getKey());
+
                         }
                     }
                 }
             }
         }
-        return null;
     }
 
 

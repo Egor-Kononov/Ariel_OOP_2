@@ -9,13 +9,15 @@ public class NodeData implements node_data{
     private int key ;
     private static int count = 0;
     private String Info;
-    private double tag;
+    private double dist;
+    private int tag;
     private double weight;
 
 
     public NodeData(){
         this.key = count;
         neighbors = new HashMap<>();
+        this.dist = Integer.MAX_VALUE;
         this.weight = 0;
         this.Info = "white";
         this.tag = Integer.MAX_VALUE;
@@ -26,6 +28,7 @@ public class NodeData implements node_data{
         this.key = other.getKey();
         neighbors = new HashMap<>();
         this.weight = other.getWeight();
+        this.dist = Integer.MAX_VALUE;
         this.Info = other.getInfo();
         this.tag = other.getTag();
     }
@@ -49,6 +52,13 @@ public class NodeData implements node_data{
 
     public edge_data removeEdge( int dest){
         return this.neighbors.remove(dest);
+    }
+    public double getDist(){
+        return this.dist;
+    }
+
+    public void setDist(double dist){
+        this.dist = dist;
     }
 
 
@@ -162,12 +172,12 @@ public class NodeData implements node_data{
     }
 
     @Override
-    public double getTag() {
+    public int getTag() {
         return this.tag;
     }
 
     @Override
-    public void setTag(double t) {
+    public void setTag(int t) {
         this.tag = t;
     }
 }
