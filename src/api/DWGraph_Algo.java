@@ -97,7 +97,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         if(src == dest)
             return 0;
         if(graph.getV().contains(graph.getNode(src))&&graph.getV().contains(graph.getNode(dest))) {
-            dijkatra(src, dest);
+            dijkstra(src, dest);
             NodeData var = (NodeData) this.graph.getNode(dest);
             double dist = var.getDist();
             if(dist == Integer.MAX_VALUE)
@@ -118,7 +118,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         if(graph.getV().contains(graph.getNode(src))&&graph.getV().contains(graph.getNode(dest))) {
             //HashMap with path
-            dijkatra(src, dest);
+            dijkstra(src, dest);
             node_data tempVariable = graph.getNode(dest);
             //check if got to destination
             if(tempVariable.getTag()==Integer.MAX_VALUE )
@@ -137,7 +137,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return null;
     }
-    public void dijkatra(int src, int dest){
+    public void dijkstra(int src, int dest){
         PriorityQueue<NodeData> pq = new PriorityQueue<>(new Comparator<NodeData>() {
             @Override
             public int compare(NodeData o1, NodeData o2) {
