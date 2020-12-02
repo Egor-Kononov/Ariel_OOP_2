@@ -12,11 +12,13 @@ public class NodeData implements node_data{
     private double dist;
     private int tag;
     private double weight;
+    private geo_location geo;
 
 
     public NodeData(){
         this.key = count;
         neighbors = new HashMap<>();
+        this.geo = new location();
         this.dist = Integer.MAX_VALUE;
         this.weight = 0;
         this.Info = "white";
@@ -60,7 +62,6 @@ public class NodeData implements node_data{
     public void setDist(double dist){
         this.dist = dist;
     }
-
 
     private class EdgeData implements edge_data{
         private int src;
@@ -143,12 +144,56 @@ public class NodeData implements node_data{
 
     @Override
     public geo_location getLocation() {
-        return null;
+        return this.geo;
     }
 
     @Override
     public void setLocation(geo_location p) {
+        location loc = (location) this.geo;
+        loc.setX(p.x());
+        loc.setY(p.y());
+        loc.setZ(p.z());
+    }
+    private class location implements geo_location{
+        private double x;
+        private double y;
+        private double z;
 
+        public location(){
+            this.x = 0;
+            this.y = 0;
+            this.z = 0;
+        }
+
+        public void setX(double x){
+            this.x =x;
+        }
+
+        @Override
+        public double x() {
+            return this.x;
+        }
+        public void setY(double y){
+            this.y =y;
+        }
+
+        @Override
+        public double y() {
+            return this.y;
+        }
+        public void setZ(double z){
+            this.z =z;
+        }
+
+        @Override
+        public double z() {
+            return this.z;
+        }
+
+        @Override
+        public double distance(geo_location g) {
+            return 0;
+        }
     }
 
     @Override
