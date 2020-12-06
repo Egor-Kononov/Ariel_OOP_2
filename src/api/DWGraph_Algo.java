@@ -3,10 +3,13 @@ package api;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import jdk.javadoc.doclet.Taglet;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import javax.xml.stream.Location;
 import java.io.*;
 import java.util.*;
 
@@ -218,7 +221,41 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
 
     @Override
-    public boolean load(String file) {
-        return false;
+    public boolean load(String file) throws  JSONException {
+        try {
+            Scanner scanner = new Scanner(new File(file));
+            String jsonString = scanner.useDelimiter("\\A").next();
+            scanner.close();
+            directed_weighted_graph g = new DWGraph_DS();
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONObject tempObj = new JSONObject();
+            JSONArray nodes = jsonObject.getJSONArray("Nodes");
+            JSONArray edges = jsonObject.getJSONArray("Edges");
+
+            for (int i = 0; i < nodes.length(); i++) {
+                tempObj = nodes.getJSONObject(i);
+                int key = (int) tempObj.get("id");
+                String geo = (String) tempObj.get("pos");
+                NodeData node = new NodeData(key);
+                ArrayList<Double> points = new ArrayList<Double>(3);
+                for(String part : geo.split(",")){
+                    points.add(Double.parseDouble(part));
+                }
+                node.setLocation(points.get(0),points.get(1),points.get(2));
+                g.addNode(node);
+            }
+            for (int i = 0; i < edges.length(); i++) {
+                tempObj = edges.optJSONObject(i);
+                int src = (int) tempObj.get("src");
+                int dest = (int) tempObj.get("dest");
+                double weight = (double) tempObj.get("w");
+                g.connect(src, dest, weight);
+            }
+            this.graph = g;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

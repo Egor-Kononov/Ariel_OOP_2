@@ -1,8 +1,10 @@
 package api;
 
+import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,10 +109,33 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void save() {
+    void saveAndLoad() throws FileNotFoundException, JSONException {
+        directed_weighted_graph g = new DWGraph_DS();
+        node_data node = new NodeData();
+        node_data node1 = new NodeData();
+        node_data node2 = new NodeData();
+        node_data node3 = new NodeData();
+        node_data node4 = new NodeData();
+        g.addNode(node);
+        g.addNode(node1);
+        g.addNode(node2);
+        g.addNode(node3);
+        g.addNode(node4);
+        g.connect(node.getKey(),node1.getKey(),10);
+        g.connect(node1.getKey(),node2.getKey(),7);
+        g.connect(node1.getKey(),node4.getKey(),20);
+        g.connect(node2.getKey(),node3.getKey(),6);
+        g.connect(node3.getKey(),node4.getKey(),5);
+        g.connect(node2.getKey(),node4.getKey(),10);
+        dw_graph_algorithms g0 = new DWGraph_Algo();
+        g0.init(g);
+        String str = "garph.jason";
+        assertTrue(g0.save(str));
+        dw_graph_algorithms g1 = new DWGraph_Algo();
+        assertTrue(g1.load("garph.jason"));
+        assertEquals(5,g1.getGraph().nodeSize());
+        assertEquals(6, g1.getGraph().edgeSize());
+        assertEquals(g0.getGraph(),g1.getGraph());
     }
 
-    @Test
-    void load() {
-    }
 }
