@@ -222,7 +222,11 @@ public class NodeData implements node_data{
 
         @Override
         public double distance(geo_location g) {
-            return 0;
+            double dx = this.x - g.x();
+            double dy = this.y - g.y();
+            double dz = this.z - g.z();
+            double t = (dx*dx+dy*dy+dz*dz);
+            return Math.sqrt(t);
         }
     }
 
