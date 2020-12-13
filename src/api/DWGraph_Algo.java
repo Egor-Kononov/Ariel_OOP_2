@@ -3,13 +3,9 @@ package api;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import jdk.javadoc.doclet.Taglet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
-import javax.xml.stream.Location;
 import java.io.*;
 import java.util.*;
 
@@ -97,7 +93,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return g;
     }
     public void nullify(){
-        for(node_data run : graph.getV()){
+        NodeData run = new NodeData();
+        for(node_data run1 : graph.getV()){
+            run = (NodeData) run1;
+            run.setDist(Integer.MAX_VALUE);
             run.setTag(Integer.MAX_VALUE);
             run.setInfo("white");
         }
@@ -111,8 +110,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             dijkstra(src, dest);
             NodeData var = (NodeData) this.graph.getNode(dest);
             double dist = var.getDist();
-            if(dist == Integer.MAX_VALUE)
+            if(dist == Integer.MAX_VALUE){
+                nullify();
                 return -1;
+            }
+
             nullify();
             return dist;
         }
@@ -132,8 +134,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             dijkstra(src, dest);
             node_data tempVariable = graph.getNode(dest);
             //check if got to destination
-            if(tempVariable.getTag()==Integer.MAX_VALUE )
+            if(tempVariable.getTag()==Integer.MAX_VALUE ) {
+                nullify();
                 return null;
+            }
             path.addFirst(tempVariable);
             int keyOfparent = tempVariable.getTag();
             while (keyOfparent != src){
@@ -148,42 +152,41 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return null;
     }
-    public void dijkstra(int src, int dest){
-        PriorityQueue<NodeData> pq = new PriorityQueue<>(new Comparator<NodeData>() {
-            @Override
-            public int compare(NodeData o1, NodeData o2) {
-                return  Double.compare(o1.getDist(), o2.getDist());
-            }
-        });
-        NodeData p = (NodeData) this.graph.getNode(src);
-        p.setDist(0);
-        pq.add(p);
-        while(!pq.isEmpty()){
-            NodeData temp = (NodeData) pq.poll();
-            // blue the node which was visited
-            if(temp.getInfo() != "blue"){
-                temp.setInfo("blue");
-                if(temp.getKey() == dest){
-                    return;
+    public void dijkstra(int src, int dest) {
+            PriorityQueue<NodeData> pq = new PriorityQueue<>(new Comparator<NodeData>() {
+                @Override
+                public int compare(NodeData o1, NodeData o2) {
+                    return Double.compare(o1.getDist(), o2.getDist());
                 }
-                // check all neighbors of visited node
-                for(edge_data run : this.graph.getE(temp.getKey())){
-                    if(graph.getNode(run.getDest()).getInfo() != "blue" ){
-                        edge_data edge = graph.getEdge(run.getSrc(),run.getDest());
-                        double dist = temp.getDist() + edge.getWeight();
-                        NodeData var = (NodeData) graph.getNode(run.getDest());
-                        if(dist < var.getDist()){
-                            var.setDist(dist);
-                            pq.add(var);
-                            var.setTag(temp.getKey());
+            });
+            NodeData p = (NodeData) this.graph.getNode(src);
+            p.setDist(0);
+            pq.add(p);
+            while (!pq.isEmpty()) {
+                NodeData temp = (NodeData) pq.poll();
+                // blue the node which was visited
+                if (temp.getInfo() != "blue") {
+                    temp.setInfo("blue");
+                    if (temp.getKey() == dest) {
+                        return;
+                    }
+                    // check all neighbors of visited node
+                    for (edge_data run : this.graph.getE(temp.getKey())) {
+                        if (graph.getNode(run.getDest()).getInfo() != "blue") {
+                            edge_data edge = graph.getEdge(run.getSrc(), run.getDest());
+                            double dist = temp.getDist() + edge.getWeight();
+                            NodeData var = (NodeData) graph.getNode(run.getDest());
+                            if (dist < var.getDist()) {
+                                var.setDist(dist);
+                                pq.add(var);
+                                var.setTag(temp.getKey());
 
+                            }
                         }
                     }
                 }
             }
         }
-    }
-
 
     @Override
     public boolean save(String file) {
@@ -221,9 +224,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
 
     @Override
-    public boolean load(String file) throws  JSONException {
+    public boolean load(String file) {
         try {
-            Scanner scanner = new Scanner(new File(file));
+            Scanner scanner = new Scanner(file);
             String jsonString = scanner.useDelimiter("\\A").next();
             scanner.close();
             directed_weighted_graph g = new DWGraph_DS();
@@ -252,7 +255,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                 g.connect(src, dest, weight);
             }
             this.graph = g;
-        } catch (FileNotFoundException e) {
+        } catch ( JSONException e) {
             e.printStackTrace();
             return false;
         }

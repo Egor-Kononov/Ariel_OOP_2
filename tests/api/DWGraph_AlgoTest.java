@@ -130,12 +130,16 @@ class DWGraph_AlgoTest {
         dw_graph_algorithms g0 = new DWGraph_Algo();
         g0.init(g);
         String str = "garph.jason";
+        List<node_data> l = g0.shortestPath(node.getKey(),node4.getKey());
         assertTrue(g0.save(str));
         dw_graph_algorithms g1 = new DWGraph_Algo();
         assertTrue(g1.load("garph.jason"));
         assertEquals(5,g1.getGraph().nodeSize());
         assertEquals(6, g1.getGraph().edgeSize());
         assertEquals(g0.getGraph(),g1.getGraph());
+        List<node_data> l1 = g1.shortestPath(node.getKey(),node4.getKey());
+        assertEquals(l,l1);
+        assertFalse(g0==g1);
     }
 
 }
