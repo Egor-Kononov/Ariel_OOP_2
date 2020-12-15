@@ -17,12 +17,13 @@ import java.util.concurrent.TimeUnit;
 public class GraphFrame extends JFrame {
     GraphPanel panel;
 
-    public GraphFrame(){
+    public GraphFrame() {
         super();
         panel = new GraphPanel();
         this.add(panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
     public void init(Arena _ar) {
         this.panel.update(_ar);
     }
@@ -32,7 +33,7 @@ public class GraphFrame extends JFrame {
         private gameClient.util.Range2Range _w2f;
 
 
-        public GraphPanel(){
+        public GraphPanel() {
             super();
             int _ind = 0;
 
@@ -44,110 +45,124 @@ public class GraphFrame extends JFrame {
         }
 
         private void updateFrame() {
-            Range rx = new Range(20,this.getWidth()-20);
-            Range ry = new Range(this.getHeight()-10,150);
-            Range2D frame = new Range2D(rx,ry);
+            Range rx = new Range(20, this.getWidth() - 20);
+            Range ry = new Range(this.getHeight() - 10, 150);
+            Range2D frame = new Range2D(rx, ry);
             directed_weighted_graph g = _ar.getGraph();
-            _w2f = Arena.w2f(g,frame);
+            _w2f = Arena.w2f(g, frame);
         }
+
         public void paint(Graphics g) {
             int w = this.getWidth();
             int h = this.getHeight();
             g.clearRect(0, 0, w, h);
-            long seconds = TimeUnit.MILLISECONDS.toSeconds(_ar.getGame().timeToEnd());
+
             updateFrame();
             drawPokemons(g);
             drawGraph(g);
             drawAgents(g);
             drawInfo(g);
-            g.drawString("Time to end: 00:"+seconds,50,40);
-            List<CL_Agent> agents = _ar.getAgents();
-            for(int i = 0; i < agents.size();i++){
-                g.drawString("Agent "+i+": grade"+agents.get(i).getValue(),50,60+i*15);
-            }
+            drawTime(g);
+            drawGrade(g);
 
         }
+
         private void drawInfo(Graphics g) {
             java.util.List<String> str = _ar.get_info();
             String dt = "none";
-            for(int i=0;i<str.size();i++) {
-                g.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
+            for (int i = 0; i < str.size(); i++) {
+                g.drawString(str.get(i) + " dt: " + dt, 100, 60 + i * 20);
             }
 
         }
+
         private void drawGraph(Graphics g) {
             directed_weighted_graph gg = _ar.getGraph();
             Iterator<node_data> iter = gg.getV().iterator();
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 node_data n = iter.next();
                 g.setColor(Color.BLUE);
-                drawNode(n,5,g);
+                drawNode(n, 5, g);
                 Iterator<edge_data> itr = gg.getE(n.getKey()).iterator();
-                while(itr.hasNext()) {
+                while (itr.hasNext()) {
                     edge_data e = itr.next();
                     g.setColor(Color.gray);
                     drawEdge(e, g);
                 }
             }
         }
+
         private void drawPokemons(Graphics g) {
             java.util.List<CL_Pokemon> fs = _ar.getPokemons();
-            if(fs!=null) {
+            if (fs != null) {
                 Iterator<CL_Pokemon> itr = fs.iterator();
 
-                while(itr.hasNext()) {
+                while (itr.hasNext()) {
 
                     CL_Pokemon f = itr.next();
                     Point3D c = f.getLocation();
-                    int r=10;
+                    int r = 10;
                     g.setColor(Color.green);
-                    if(f.getType()<0) {g.setColor(Color.orange);}
-                    if(c!=null) {
+                    if (f.getType() < 0) {
+                        g.setColor(Color.orange);
+                    }
+                    if (c != null) {
 
                         geo_location fp = this._w2f.world2frame(c);
-                        g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
+                        g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
                         //	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
 
                     }
                 }
             }
         }
+
         private void drawAgents(Graphics g) {
             List<CL_Agent> rs = _ar.getAgents();
             //	Iterator<OOP_Point3D> itr = rs.iterator();
-            g.setColor(Color.red);
-            int i=0;
-            while(rs!=null && i<rs.size()) {
+            g.setColor(Color.black);
+            int i = 0;
+            while (rs != null && i < rs.size()) {
                 geo_location c = rs.get(i).getLocation();
-                int r=8;
+                int r = 8;
                 i++;
-                if(c!=null) {
+                if (c != null) {
 
                     geo_location fp = this._w2f.world2frame(c);
-                    g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
+                    g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
                 }
             }
         }
+
         private void drawNode(node_data n, int r, Graphics g) {
             geo_location pos = n.getLocation();
             geo_location fp = this._w2f.world2frame(pos);
-            g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
-            g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-4*r);
+            g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
+            g.drawString("" + n.getKey(), (int) fp.x(), (int) fp.y() - 4 * r);
         }
+
         private void drawEdge(edge_data e, Graphics g) {
             directed_weighted_graph gg = _ar.getGraph();
             geo_location s = gg.getNode(e.getSrc()).getLocation();
             geo_location d = gg.getNode(e.getDest()).getLocation();
             geo_location s0 = this._w2f.world2frame(s);
             geo_location d0 = this._w2f.world2frame(d);
-            g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
+            g.drawLine((int) s0.x(), (int) s0.y(), (int) d0.x(), (int) d0.y());
             //	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
         }
-        public void drawTime(Graphics g ){
+
+        public void drawTime(Graphics g) {
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(_ar.getGame().timeToEnd());
+            g.drawString("Time to end: 00:" + seconds, 50, 40);
 
         }
 
-
+        public void drawGrade(Graphics g) {
+            List<CL_Agent> agents = _ar.getAgents();
+            for (int i = 0; i < agents.size(); i++) {
+                g.drawString("Agent " + i + ": grade" + agents.get(i).getValue(), 50, 60 + i * 15);
+            }
+        }
 
     }
 }

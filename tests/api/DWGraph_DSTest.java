@@ -31,6 +31,7 @@ class DWGraph_DSTest {
         g.removeNode(node1.getKey());
         int s = g.nodeSize();
         assertEquals(1,s);
+        assertNull(g.getNode(50));
 
     }
 
@@ -50,6 +51,7 @@ class DWGraph_DSTest {
         edge_data w30 = g.getEdge(node3.getKey(),node.getKey());
         assertNotEquals(w03, w30);
         assertEquals(w03.getWeight(), 3);
+        assertNull(g.getEdge(node1.getKey(),node.getKey()));
     }
 
     @Test

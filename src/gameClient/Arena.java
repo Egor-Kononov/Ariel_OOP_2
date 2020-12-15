@@ -90,6 +90,7 @@ public class Arena {
 		}
 		return ans;
 	}
+
 	public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {
 		ArrayList<CL_Pokemon> ans = new  ArrayList<CL_Pokemon>();
 		try {
@@ -171,7 +172,7 @@ public class Arena {
 		Range2Range ans = new Range2Range(world, frame);
 		return ans;
 	}
-
+     
 	public void setGame(game_service game) {
 		this.game = game;
 	}
