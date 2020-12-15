@@ -224,7 +224,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
 
     @Override
-    public boolean load(String file) {
+    public boolean load (String file) {
         try {
             Scanner scanner = new Scanner(file);
             String jsonString = scanner.useDelimiter("\\A").next();
@@ -255,7 +255,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                 g.connect(src, dest, weight);
             }
             this.graph = g;
-        } catch ( JSONException e) {
+        } catch (JSONException  e) {
             e.printStackTrace();
             return false;
         }

@@ -12,8 +12,6 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DWGraph_DSTest {
-
-    directed_weighted_graph g = new DWGraph_DS();
     node_data node = new NodeData();
     node_data node1 = new NodeData();
     node_data node2 = new NodeData();
@@ -23,6 +21,7 @@ class DWGraph_DSTest {
 
     @Test
     void nodeSize() {
+        directed_weighted_graph g = new DWGraph_DS();
         g.addNode(node);
         g.addNode(node1);
         g.addNode(node1);
@@ -33,10 +32,12 @@ class DWGraph_DSTest {
         assertEquals(1,s);
         assertNull(g.getNode(50));
 
+
     }
 
     @Test
     void edgeSize() {
+        directed_weighted_graph g = new DWGraph_DS();
         g.addNode(node);
         g.addNode(node1);
         g.addNode(node2);
@@ -98,17 +99,24 @@ class DWGraph_DSTest {
         g.addNode(node1);
         g.addNode(node2);
         g.addNode(node3);
+        assertTrue(g.nodeSize()==4);
         g.connect(node.getKey(),node1.getKey(),1);
         g.connect(node.getKey(),node2.getKey(),2);
         g.connect(node.getKey(),node3.getKey(),3);
+        assertTrue(g.getMC()==7);
         g.removeNode(node4.getKey());
+        assertTrue(g.nodeSize()==4);
         g.removeNode(node.getKey());
+        assertTrue(g.nodeSize()==3);
+        assertTrue(g.edgeSize()==0);
+        assertTrue(g.getMC()==11);
         assertNull(g.getEdge(node.getKey(),node1.getKey()));
         assertNull(g.getEdge(node1.getKey(),node.getKey()));
         int e = g.edgeSize();
         assertEquals(0,e);
         assertEquals(3,g.nodeSize());
     }
+
 
     @Test
     void removeEdge() {
@@ -117,12 +125,25 @@ class DWGraph_DSTest {
         g.addNode(node1);
         g.addNode(node2);
         g.addNode(node3);
+        g.addNode(node4);
         g.connect(node.getKey(),node1.getKey(),1);
+        g.connect(node.getKey(),node2.getKey(),2);
         g.connect(node.getKey(),node2.getKey(),2);
         g.connect(node.getKey(),node3.getKey(),3);
         g.removeEdge(node.getKey(),node1.getKey());
+        assertTrue(g.edgeSize()==2);
         edge_data w = g.getEdge(node.getKey(),node1.getKey());
         assertNull(w);
+        assertTrue(g.getMC()==9);
+        assertNull(g.removeEdge(1,7));
+        g.removeEdge(1,7);
+        assertTrue(g.getMC()==9);
+        g.connect(node3.getKey(),node.getKey(),3);
+        g.connect(node2.getKey(),node.getKey(),3);
+        g.connect(node4.getKey(),node.getKey(),3);
+        g.removeNode(node.getKey());
+        assertTrue(g.edgeSize()==0);
+
     }
 
 

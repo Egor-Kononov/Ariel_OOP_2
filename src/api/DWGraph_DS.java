@@ -42,14 +42,19 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         @Override
     public void connect(int src, int dest, double w) {
-        if(w < 0  || src == dest || getEdge(src,dest)!=null)
+        if(w < 0  || src == dest || !graph.containsKey(src) ||!graph.containsKey(dest))
             return;
-        if(graph.containsKey(src)&&graph.containsKey(dest)){
             node = (NodeData)graph.get(src);
+        if(node.getEdge(dest)!=null){
+            if(node.getEdge(dest).getWeight() == w)
+                return;
             node.createEdge(src,dest,w);
             edgeSize ++;
             mc ++;
         }
+            node.createEdge(src,dest,w);
+            edgeSize ++;
+            mc ++;
     }
 
     @Override
@@ -70,17 +75,18 @@ public class DWGraph_DS implements directed_weighted_graph {
         if(!graph.containsKey(key))
             return null;
 
-        node = (NodeData) getNode(key);
+        NodeData var = (NodeData) getNode(key);
         for(node_data i : this.getV()){
-            NodeData s = (NodeData)i;
-            if( s.getNi().contains(s)){
-                s.removeEdge(key);
+            edge_data ed = getEdge(i.getKey(),key);
+            NodeData s = (NodeData) this.getNode(i.getKey());
+            if( ed != null){
+                 s.removeEdge(key);
                 edgeSize --;
                 mc ++;
             }
         }
-        edgeSize -= node.getNi().size();
-        mc += node.getNi().size();
+        edgeSize -= var.getNi().size();
+        mc += var.getNi().size()+1;
         return graph.remove(key);
     }
 
