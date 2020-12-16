@@ -16,7 +16,7 @@
 >>###### 7 *getWeight* return double of vertice
 #### class DWGraph_DS disigned to create graph
 ##### data structure for this class is HashMap because each vertices has a unique key and this allows us retrieve information faster.
->###### WGraph_DS has 13 main functions:
+>###### DWGraph_DS has 13 main functions:
 >>###### 1 *Constructor*, creates empty graph.
 >>###### 2 *getNode* receives integer, return vertice if he exist in graph.
 >>###### 3 *getEdge* receives 2 integer keys , return value of edge if exist edge else return -1.
