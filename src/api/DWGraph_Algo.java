@@ -53,9 +53,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         if(start == null)
             return false;
         flag = bfs(start,this.graph);
-        if(flag == false)
+        if(flag == false){
+            nullify();
             return false;
-
+        }
         nullify();
         directed_weighted_graph g = transpose();
         start = g.getNode(start.getKey());
@@ -104,9 +105,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public double shortestPathDist(int src, int dest) {
-        if(src == dest)
-            return 0;
+
         if(graph.getV().contains(graph.getNode(src))&&graph.getV().contains(graph.getNode(dest))) {
+            if(src == dest)
+                return 0;
             dijkstra(src, dest);
             NodeData var = (NodeData) this.graph.getNode(dest);
             double dist = var.getDist();
@@ -130,6 +132,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return path;
         }
         if(graph.getV().contains(graph.getNode(src))&&graph.getV().contains(graph.getNode(dest))) {
+            if(src == dest) {
+                node_data s = graph.getNode(dest);
+                path.addFirst(s);
+                return path;
+            }
             //HashMap with path
             dijkstra(src, dest);
             node_data tempVariable = graph.getNode(dest);
