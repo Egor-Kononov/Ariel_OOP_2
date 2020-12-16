@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -24,8 +25,8 @@ public class Ex2 implements Runnable{
 
     @Override
     public void run() {
-
         Scanner s = new Scanner(System.in);
+        System.out.println("Enter id and level of game");
         int id = s.nextInt();
         int scenario_num = s.nextInt();
         s.close();
@@ -43,7 +44,7 @@ public class Ex2 implements Runnable{
         init(game);
 
         game.startGame();
-        _win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
+        //_win.setTitle("Ex2 - OOP:"+game.toString());
         int ind=0;
         long dt=100;
 

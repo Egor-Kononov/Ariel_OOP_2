@@ -42,17 +42,20 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         @Override
     public void connect(int src, int dest, double w) {
-        if(w < 0  || src == dest || !graph.containsKey(src) ||!graph.containsKey(dest))
+        if(w < 0  || src == dest || !graph.containsKey(src) ||!graph.containsKey(dest)) {
             return;
-            node = (NodeData)graph.get(src);
-        if(node.getEdge(dest)!=null){
-            if(node.getEdge(dest).getWeight() == w)
+        }
+        NodeData var = (NodeData)graph.get(src);
+        if(var.getEdge(dest)!=null){
+            if(var.getEdge(dest).getWeight() >= w) {
                 return;
-            node.createEdge(src,dest,w);
+            }
+            var.createEdge(src,dest,w);
             edgeSize ++;
             mc ++;
+            return;
         }
-            node.createEdge(src,dest,w);
+            var.createEdge(src,dest,w);
             edgeSize ++;
             mc ++;
     }
