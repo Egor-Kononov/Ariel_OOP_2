@@ -30,12 +30,12 @@
 >>###### 11 *edgeSize* return number of edge.
 >>###### 2 *getMc* number of changes in graph.
 #### class DWGraph_Algo disigned to work with a graph
-> ######DWGraph_Algo has 8 main functions:
->> ######1 Init method is a predefine method to initialize an object after its creation.
->> ######2 getGraph return all vertices of graph.
->> ######3 copy deep copy of the graph.
->> ######4 isConnected retun true when graph linked, using an algorithm Kosaraju (https://www.geeksforgeeks.org/check-given-directed-graph-strongly-connected-set-2-kosaraju-using-bfs/)
->> ######5 shortestPathDist receives source key and destanation key, return shortest distance of path using an algorithm(https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
->> ######6 shortestPath receives source key and destanation key, return shortest path using an algorithm(https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
->> ######7 save, return true if managed to create a file using data format Json
->> ######8 load, return true if managed to upload a file using data format Json
+> ###### DWGraph_Algo has 8 main functions:
+>> ###### 1 Init method is a predefine method to initialize an object after its creation.
+>> ###### 2 getGraph return all vertices of graph.
+>> ###### 3 copy deep copy of the graph.
+>> ###### 4 isConnected retun true when graph linked, using an algorithm Kosaraju (https://www.geeksforgeeks.org/check-given-directed-graph-strongly-connected-set-2-kosaraju-using-bfs/)
+>> ###### 5 shortestPathDist receives source key and destanation key, return shortest distance of path using an algorithm(https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+>> ###### 6 shortestPath receives source key and destanation key, return shortest path using an algorithm(https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+>> ###### 7 save, return true if managed to create a file using data format Json
+>> ###### 8 load, return true if managed to upload a file using data format Json
