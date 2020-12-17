@@ -120,7 +120,7 @@ public class GraphFrame extends JFrame {
         private void drawAgents(Graphics g) {
             List<CL_Agent> rs = _ar.getAgents();
             //	Iterator<OOP_Point3D> itr = rs.iterator();
-            g.setColor(Color.black);
+            g.setColor(Color.RED);
             int i = 0;
             while (rs != null && i < rs.size()) {
                 geo_location c = rs.get(i).getLocation();
