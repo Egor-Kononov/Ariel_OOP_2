@@ -12,24 +12,20 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DWGraph_DSTest {
-    node_data node = new NodeData();
-    node_data node1 = new NodeData();
-    node_data node2 = new NodeData();
-    node_data node3 = new NodeData();
-    node_data node4 = new NodeData();
 
 
     @Test
     void nodeSize() {
         directed_weighted_graph g = new DWGraph_DS();
-        g.addNode(node);
-        g.addNode(node1);
-        g.addNode(node1);
-        g.removeNode(node3.getKey());
-        g.removeNode(node1.getKey());
-        g.removeNode(node1.getKey());
-        int s = g.nodeSize();
-        assertEquals(1,s);
+        for(int i=0;i<5;i++){
+            node_data node = new NodeData(i);
+            g.addNode(node);
+        }
+        assertTrue(g.nodeSize() == 5);
+        g.removeNode(3);
+        g.removeNode(1);
+        g.removeNode(1);
+        assertTrue(g.nodeSize()==3);
         assertNull(g.getNode(50));
 
 
@@ -38,34 +34,33 @@ class DWGraph_DSTest {
     @Test
     void edgeSize() {
         directed_weighted_graph g = new DWGraph_DS();
-        g.addNode(node);
-        g.addNode(node1);
-        g.addNode(node2);
-        g.addNode(node3);
-        g.connect(node.getKey(),node1.getKey(),1);
-        g.connect(node.getKey(),node2.getKey(),2);
-        g.connect(node.getKey(),node3.getKey(),3);
-        g.connect(node.getKey(),node.getKey(),1);
-        int e_size =  g.edgeSize();
-        assertEquals(3, e_size);
-        edge_data w03 = g.getEdge(node.getKey(),node3.getKey());
-        edge_data w30 = g.getEdge(node3.getKey(),node.getKey());
-        assertNotEquals(w03, w30);
-        assertEquals(w03.getWeight(), 3);
-        assertNull(g.getEdge(node1.getKey(),node.getKey()));
+        for(int i=0;i<5;i++){
+            node_data node = new NodeData(i);
+            g.addNode(node);
+        }
+        g.connect(0,1,1);
+        g.connect(0,2,2);
+        g.connect(0,3,3);
+        g.connect(0,0,1);
+        assertEquals(3, g.edgeSize());
+        g.connect(1,2,1);
+        g.removeNode(0);
+        assertEquals(1, g.edgeSize());
     }
 
     @Test
     void getV() {
         directed_weighted_graph g = new DWGraph_DS();
-        g.addNode(node);
-        g.addNode(node1);
-        g.addNode(node2);
-        g.addNode(node3);
-        g.connect(node.getKey(),node1.getKey(),1);
-        g.connect(node.getKey(),node2.getKey(),2);
-        g.connect(node.getKey(),node3.getKey(),3);
-        g.connect(node.getKey(),node.getKey(),1);
+        for(int i=0;i<5;i++){
+            node_data node = new NodeData(i);
+            g.addNode(node);
+        }
+
+        g.connect(0,1,1);
+        g.connect(1,2,2);
+        g.connect(2,3,3);
+        g.connect(3,4,1);
+        g.connect(2,5,3);
         Collection<node_data> v = g.getV();
         Iterator<node_data> iter = v.iterator();
         while (iter.hasNext()) {
@@ -77,71 +72,77 @@ class DWGraph_DSTest {
     @Test
     void connect() {
         directed_weighted_graph g = new DWGraph_DS();
-        g.addNode(node);
-        g.addNode(node1);
-        g.addNode(node2);
-        g.addNode(node3);
-        g.connect(node.getKey(),node1.getKey(),1);
-        g.connect(node.getKey(),node2.getKey(),2);
-        g.connect(node.getKey(),node3.getKey(),3);
-        g.removeEdge(node.getKey(),node1.getKey());
-        assertNull(g.getEdge(node.getKey(),node1.getKey()));
-        g.connect(node.getKey(),node1.getKey(),1);
-        edge_data w = g.getEdge(node.getKey(),node1.getKey());
-        assertEquals(w.getWeight(),1);
-        assertNull(g.getEdge(node1.getKey(),node.getKey()));
+        for(int i=0;i<5;i++){
+            node_data node = new NodeData(i);
+            g.addNode(node);
+        }
+
+        g.connect(0,1,1);
+        g.connect(0,2,2);
+        g.connect(0,3,3);
+        assertTrue(g.edgeSize()==3);
+
+        g.removeEdge(0,1);
+        assertNull(g.getEdge(0,1));
+
+        edge_data w = g.getEdge(0,3);
+        assertEquals(w.getWeight(),3);
+        assertNull(g.getEdge(1,0));
+
+        g.connect(0,3,5);
+         w = g.getEdge(0,3);
+        assertTrue(w.getWeight()==5);
+
+        g.connect(0,0,1);
+        assertTrue(g.edgeSize()==3);
     }
 
     @Test
     void removeNode() {
         directed_weighted_graph g = new DWGraph_DS();
-        g.addNode(node);
-        g.addNode(node1);
-        g.addNode(node2);
-        g.addNode(node3);
-        assertTrue(g.nodeSize()==4);
-        g.connect(node.getKey(),node1.getKey(),1);
-        g.connect(node.getKey(),node2.getKey(),2);
-        g.connect(node.getKey(),node3.getKey(),3);
+        for(int i=0;i<5;i++){
+            node_data node = new NodeData(i);
+            g.addNode(node);
+        }
+        assertTrue(g.nodeSize()==5);
+        g.connect(0,1,2);
+        g.connect(0,3,3);
         assertTrue(g.getMC()==7);
-        g.removeNode(node4.getKey());
+
+        g.removeNode(4);
         assertTrue(g.nodeSize()==4);
-        g.removeNode(node.getKey());
+
+        g.removeNode(0);
         assertTrue(g.nodeSize()==3);
         assertTrue(g.edgeSize()==0);
         assertTrue(g.getMC()==11);
-        assertNull(g.getEdge(node.getKey(),node1.getKey()));
-        assertNull(g.getEdge(node1.getKey(),node.getKey()));
-        int e = g.edgeSize();
-        assertEquals(0,e);
-        assertEquals(3,g.nodeSize());
+        assertNull(g.getNode(10));
+
     }
 
 
     @Test
     void removeEdge() {
         directed_weighted_graph g = new DWGraph_DS();
-        g.addNode(node);
-        g.addNode(node1);
-        g.addNode(node2);
-        g.addNode(node3);
-        g.addNode(node4);
-        g.connect(node.getKey(),node1.getKey(),1);
-        g.connect(node.getKey(),node2.getKey(),2);
-        g.connect(node.getKey(),node2.getKey(),2);
-        g.connect(node.getKey(),node3.getKey(),3);
-        g.removeEdge(node.getKey(),node1.getKey());
+        for(int i=0;i<5;i++){
+            node_data node = new NodeData(i);
+            g.addNode(node);
+        }
+        g.connect(0,1,1);
+        g.connect(0,2,2);
+        g.connect(0,2,2);
+        g.connect(0,4,3);
+        g.removeEdge(0,1);
         assertTrue(g.edgeSize()==2);
-        edge_data w = g.getEdge(node.getKey(),node1.getKey());
+        edge_data w = g.getEdge(0,1);
         assertNull(w);
         assertTrue(g.getMC()==9);
         assertNull(g.removeEdge(1,7));
-        g.removeEdge(1,7);
         assertTrue(g.getMC()==9);
-        g.connect(node3.getKey(),node.getKey(),3);
-        g.connect(node2.getKey(),node.getKey(),3);
-        g.connect(node4.getKey(),node.getKey(),3);
-        g.removeNode(node.getKey());
+        g.connect(3,0,3);
+        g.connect(2,0,3);
+        g.connect(4,0,3);
+        g.removeNode(0);
         assertTrue(g.edgeSize()==0);
 
     }
