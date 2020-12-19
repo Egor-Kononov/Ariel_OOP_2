@@ -17,12 +17,20 @@ public class DWGraph_DS implements directed_weighted_graph {
         mc = 0;
     }
 
-
+    /**
+     * return vertex of this key
+     * @param key - the node_id
+     */
     @Override
     public node_data getNode(int key) {
         return this.graph.get(key);
     }
 
+    /**
+     * return edge if not exist return null
+     * @param src
+     * @param dest
+     */
     @Override
     public edge_data getEdge(int src, int dest) {
         if(graph.containsKey(src) && graph.containsKey(dest)){
@@ -32,6 +40,10 @@ public class DWGraph_DS implements directed_weighted_graph {
         return null;
     }
 
+    /**
+     * this method add vertex to the graph
+     * @param n key of the graph
+     */
     @Override
     public void addNode(node_data n) {
         if(graph.containsKey(n.getKey()))
@@ -40,7 +52,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         mc ++;
     }
 
-        @Override
+    /**
+     * this method connect vertexes
+     * @param src - the source of the edge.
+     * @param dest - the destination of the edge.
+     * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     */
+    @Override
     public void connect(int src, int dest, double w) {
         if(w < 0  || src == dest || !graph.containsKey(src) ||!graph.containsKey(dest)) {
             return;
@@ -60,11 +78,18 @@ public class DWGraph_DS implements directed_weighted_graph {
             mc ++;
     }
 
+    /**
+     * return all vertexes of the graph
+     */
     @Override
     public Collection<node_data> getV() {
         return this.graph.values();
     }
 
+    /**
+     * return all the edges of the vertex to witch it is attached
+     * @param node_id
+     */
     @Override
     public Collection<edge_data> getE(int node_id) {
         if(!graph.containsKey(node_id))
@@ -73,6 +98,11 @@ public class DWGraph_DS implements directed_weighted_graph {
         return node.getNi() ;
     }
 
+    /**
+     * remove vertex of the graph, if vertex don't exist return null
+     * @param key
+     * @return
+     */
     @Override
     public node_data removeNode(int key) {
         if(!graph.containsKey(key))
@@ -93,6 +123,12 @@ public class DWGraph_DS implements directed_weighted_graph {
         return graph.remove(key);
     }
 
+    /**
+     * this method remove edge from graph, if edge don't exist return null
+     * @param src
+     * @param dest
+     * @return
+     */
     @Override
     public edge_data removeEdge(int src, int dest) {
         if(getEdge(src,dest) == null)
@@ -103,6 +139,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         return node.removeEdge(dest);
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,16 +149,28 @@ public class DWGraph_DS implements directed_weighted_graph {
                 Objects.equals(graph, that.graph) ;
     }
 
+    /**
+     *  return number of vertex
+     * @return
+     */
     @Override
     public int nodeSize() {
         return graph.size();
     }
 
+    /**
+     * return number of edges
+     * @return
+     */
     @Override
     public int edgeSize() {
         return edgeSize;
     }
 
+    /**
+     * return all changes of the graph
+     * @return
+     */
     @Override
     public int getMC() {
         return mc;

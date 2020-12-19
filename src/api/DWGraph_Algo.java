@@ -11,20 +11,32 @@ import java.util.*;
 
 public class DWGraph_Algo implements dw_graph_algorithms {
     directed_weighted_graph graph;
-//check
+
     public DWGraph_Algo(){
         this.graph = new DWGraph_DS();
     }
+
+    /**
+     * connect graph to algorithm
+     * @param g directed weighted graph
+     */
     @Override
     public void init(directed_weighted_graph g) {
         this.graph = g;
     }
 
+    /**
+     *return graph
+     */
     @Override
     public directed_weighted_graph getGraph() {
         return this.graph;
     }
 
+    /**
+     * this method do deep copy of the graph
+     * @return copy of that graph
+     */
     @Override
     public directed_weighted_graph copy() {
         directed_weighted_graph g = new DWGraph_DS();
@@ -40,6 +52,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return g;
     }
 
+    /**
+     * check if this graph linked
+     */
     @Override
     public boolean isConnected() {
         if(graph.nodeSize()==0 || graph.nodeSize()==1)
@@ -63,6 +78,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return bfs(start,g);
     }
 
+    /**
+     * Auxiliary function to isConnect function
+     * Bread-first search algorithms
+     * @param start
+     * @param graph
+     * @return
+     */
     public boolean bfs(node_data start,directed_weighted_graph graph){
         Queue<node_data> st1 = new ArrayDeque<node_data>();
         start.setInfo("blue");
@@ -80,6 +102,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return graph.nodeSize() == count;
     }
+
+    /**
+     *Turns all edges of the graph in another direction
+     */
     public directed_weighted_graph transpose(){
         directed_weighted_graph g = new DWGraph_DS();
         for(node_data run : graph.getV()){
@@ -93,6 +119,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return g;
     }
+
+    /**
+     * updates all values that were used to find the short path
+     * and to check connections
+     */
     public void nullify(){
         NodeData run = new NodeData();
         for(node_data run1 : graph.getV()){
@@ -103,6 +134,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     }
 
+    /**
+     * return distance from src to dest, return -1 if path don't exist
+     * @param src - start node
+     * @param dest - end (target) node
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
 
@@ -123,6 +159,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return -1;
     }
 
+    /**
+     * return route,if rout don't exist return null
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
         LinkedList<node_data> path = new LinkedList<node_data>();
@@ -159,6 +201,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return null;
     }
+
+    /**
+     *Auxiliary function to shortPath and shortPathDist functions
+     * dijkstra algorithm
+     * @param src
+     * @param dest
+     */
     public void dijkstra(int src, int dest) {
             PriorityQueue<NodeData> pq = new PriorityQueue<>(new Comparator<NodeData>() {
                 @Override
@@ -195,6 +244,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             }
         }
 
+    /**
+     * Save that graph in jason format
+     * @param file - the file name (may include a relative path).
+     * @return
+     */
     @Override
     public boolean save(String file) {
         JsonObject graph = new JsonObject();
@@ -229,7 +283,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
-
+    /**
+     * create new graph from string
+     * @param file - file name of JSON file
+     * @return
+     */
     @Override
     public boolean load (String file) {
         try {
