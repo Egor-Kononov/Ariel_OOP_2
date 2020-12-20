@@ -28,8 +28,8 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * return edge if not exist return null
-     * @param src
-     * @param dest
+     * @param src the source of the edge
+     * @param dest the destination of the edge
      */
     @Override
     public edge_data getEdge(int src, int dest) {
@@ -54,8 +54,8 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * this method connect vertexes
-     * @param src - the source of the edge.
-     * @param dest - the destination of the edge.
+     * @param src - the source of the edge
+     * @param dest - the destination of the edge
      * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
      */
     @Override
@@ -88,7 +88,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * return all the edges of the vertex to witch it is attached
-     * @param node_id
+     * @param node_id of vertex
      */
     @Override
     public Collection<edge_data> getE(int node_id) {
@@ -100,8 +100,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * remove vertex of the graph, if vertex don't exist return null
-     * @param key
-     * @return
+     * @param key id of vertex
      */
     @Override
     public node_data removeNode(int key) {
@@ -125,9 +124,8 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * this method remove edge from graph, if edge don't exist return null
-     * @param src
-     * @param dest
-     * @return
+     * @param src from where
+     * @param dest where to
      */
     @Override
     public edge_data removeEdge(int src, int dest) {
@@ -151,7 +149,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      *  return number of vertex
-     * @return
      */
     @Override
     public int nodeSize() {
@@ -160,7 +157,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * return number of edges
-     * @return
      */
     @Override
     public int edgeSize() {
@@ -169,7 +165,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * return all changes of the graph
-     * @return
      */
     @Override
     public int getMC() {

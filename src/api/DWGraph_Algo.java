@@ -81,9 +81,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     /**
      * Auxiliary function to isConnect function
      * Bread-first search algorithms
-     * @param start
-     * @param graph
-     * @return
+     * @param start start point
+     * @param graph directed weighted graph
+     * @return true if that graph connected
      */
     public boolean bfs(node_data start,directed_weighted_graph graph){
         Queue<node_data> st1 = new ArrayDeque<node_data>();
@@ -205,8 +205,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     /**
      *Auxiliary function to shortPath and shortPathDist functions
      * dijkstra algorithm
-     * @param src
-     * @param dest
+     * @param src start node
+     * @param dest end (target) node
      */
     public void dijkstra(int src, int dest) {
             PriorityQueue<NodeData> pq = new PriorityQueue<>(new Comparator<NodeData>() {
@@ -247,7 +247,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     /**
      * Save that graph in jason format
      * @param file - the file name (may include a relative path).
-     * @return
+     * @return true if this method completed successfully
      */
     @Override
     public boolean save(String file) {
@@ -286,7 +286,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     /**
      * create new graph from string
      * @param file - file name of JSON file
-     * @return
+     * @return true
      */
     @Override
     public boolean load (String file) {
